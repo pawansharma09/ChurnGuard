@@ -3,10 +3,8 @@ import requests
 import os
 
 # --- Configuration ---
-# It's a best practice to get the API URL from an environment variable
-# For local testing, it might be "http://127.0.0.1:8000"
-# On Render, you will set this to your backend service's URL
-API_URL = os.getenv("API_URL", "http://127.0.0.1:8000/predict")
+
+API_URL = st.secrets.get("API_URL")
 
 # --- Page Setup ---
 st.set_page_config(
@@ -51,7 +49,7 @@ if submit_button:
     try:
         # Send a POST request to the FastAPI backend
         with st.spinner("Getting prediction..."):
-            response = requests.post(API_URL, json=payload)
+            response = requests.post(f"{API_URL}/predict", json=payload, timeout=20)
         
         # Check if the request was successful
         if response.status_code == 200:
@@ -70,4 +68,5 @@ if submit_button:
             st.error(response.text)
 
     except requests.exceptions.RequestException as e:
+
         st.error(f"An error occurred while connecting to the API: {e}")
