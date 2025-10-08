@@ -3,8 +3,7 @@ import requests
 import os
 
 # --- Configuration ---
-
-API_URL = st.secrets.get("API_URL")
+API_URL = st.secrets["API_URL"]
 
 # --- Page Setup ---
 st.set_page_config(
@@ -70,3 +69,4 @@ if submit_button:
     except requests.exceptions.RequestException as e:
 
         st.error(f"An error occurred while connecting to the API: {e}")
+
